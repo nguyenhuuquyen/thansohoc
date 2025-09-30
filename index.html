@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Numerology</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#6D28D9",
+            secondary: "#FBBF24"
+          },
+          borderRadius: {
+            'none': '0px',
+            'sm': '2px',
+            'DEFAULT': '4px',
+            'md': '8px',
+            'lg': '12px',
+            'xl': '16px',
+            '2xl': '20px',
+            '3xl': '24px',
+            'full': '9999px',
+            'button': '4px'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #E0E7FF 0%, #F5F3FF 100%);
+      min-height: 1024px;
+      background-image: url('https://ai-public.mastergo.com/ai/img_res/664e3342c09ef1fce4b8c2e20d497f56.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #6D28D9 0%, #EC4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .result-card {
+      transition: all 0.3s ease;
+    }
+
+    .result-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .glow-button {
+      background: linear-gradient(90deg, #6D28D9 0%, #EC4899 100%);
+      transition: all 0.3s ease;
+    }
+
+    .glow-button:hover {
+      box-shadow: 0 0 20px rgba(109, 40, 217, 0.5);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .accordion-content.open {
+      max-height: 500px;
+    }
+
+    .accordion-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-icon.open {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center px-4 py-8">
+  <!-- Header -->
+  <header class="w-full max-w-6xl flex flex-col items-center mb-12">
+    <div class="flex items-center justify-center w-full mb-4">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center mr-3">
+        <i class="fas fa-star text-white text-lg"></i>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold gradient-text text-center">✨ Professional Numerology ✨</h1>
+    </div>
+    <p class="text-gray-500 italic text-center max-w-2xl">Unlock the cosmic patterns that shape your destiny through the ancient wisdom of numbers</p>
+  </header>
+
+  <!-- Input Section -->
+  <section class="w-full max-w-3xl mb-16">
+    <div class="card rounded-2xl p-8">
+      <div class="flex items-center mb-6">
+        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+          <i class="fas fa-user text-purple-600 text-lg"></i>
+        </div>
+        <h2 class="text-2xl font-semibold text-gray-800">Enter Your Information</h2>
+      </div>
+      <div class="mb-6">
+        <textarea 
+          id="rawtext-input"
+          class="w-full h-32 p-4 text-gray-700 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300 resize-none" 
+          placeholder="e.g., My name is Anna Lee, born on 1990-05-12"></textarea>
+      </div>
+      <button id="calculate-button" class="glow-button !rounded-button whitespace-nowrap w-full py-4 text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-all">
+        🔮 Calculate Numerology
+      </button>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  <section id="results-section" class="w-full max-w-6xl mb-16 hidden">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Your Numerological Insights</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Life Path Number -->
+      <div id="life_path-card" class="result-card card rounded-2xl p-6 border-l-4 border-blue-500">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+            <i class="fas fa-hashtag text-blue-600 text-lg"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800">Life Path Number</h3>
+        </div>
+        <div class="mb-4 text-gray-600 text-sm" id="life_path-calculation">
+        </div>
+        <div id="life_path-number" class="text-5xl font-bold text-blue-600 animate-fade-in"></div>
+      </div>
+
+      <!-- Expression Number -->
+      <div id="expression-card" class="result-card card rounded-2xl p-6 border-l-4 border-purple-500">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+            <i class="fas fa-sparkles text-purple-600 text-lg"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800">Expression Number</h3>
+        </div>
+        <div class="mb-4 text-gray-600 text-sm" id="expression-calculation">
+        </div>
+        <div id="expression-number" class="text-5xl font-bold text-purple-600 animate-fade-in"></div>
+      </div>
+
+      <!-- Core Personality Number -->
+      <div id="core_personality-card" class="result-card card rounded-2xl p-6 border-l-4 border-yellow-500">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+            <i class="fas fa-star text-yellow-600 text-lg"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800">Core Personality Number</h3>
+        </div>
+        <div class="mb-4 text-gray-600 text-sm" id="core_personality-calculation">
+        </div>
+        <div id="core_personality-number" class="text-5xl font-bold text-yellow-600 animate-fade-in"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Analysis Section -->
+  <section id="analysis-section" class="w-full max-w-4xl mb-16 hidden">
+    <div class="card rounded-2xl p-8">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6">Your Core Meaning</h2>
+      <p id="core-meaning" class="text-gray-700 mb-6"></p>
+      
+      <!-- Strengths Accordion -->
+      <div class="mb-6">
+        <div class="flex justify-between items-center cursor-pointer accordion-header">
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+              <i class="fas fa-check text-green-600"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-800">Strengths</h3>
+          </div>
+          <i class="fas fa-chevron-down accordion-icon text-gray-500"></i>
+        </div>
+        <div class="accordion-content open mt-4 pl-11">
+          <ul id="strengths-list" class="list-disc pl-5 space-y-2">
+          </ul>
+        </div>
+      </div>
+
+      <!-- Challenges Accordion -->
+      <div class="mb-6">
+        <div class="flex justify-between items-center cursor-pointer accordion-header">
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
+              <i class="fas fa-exclamation-triangle text-red-600"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-800">Challenges</h3>
+          </div>
+          <i class="fas fa-chevron-down accordion-icon text-gray-500"></i>
+        </div>
+        <div id="challenges-list" class="accordion-content mt-4 pl-11">
+          <ul class="list-disc pl-5 space-y-2">
+          </ul>
+        </div>
+      </div>
+
+      <!-- Life Mission Accordion -->
+      <div class="mb-6">
+        <div class="flex justify-between items-center cursor-pointer accordion-header">
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+              <i class="fas fa-globe-americas text-blue-600"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-800">Life Mission</h3>
+          </div>
+          <i class="fas fa-chevron-down accordion-icon text-gray-500"></i>
+        </div>
+        <div class="accordion-content mt-4 pl-11">
+          <p id="life-mission" class="text-gray-700">
+          </p>
+        </div>
+      </div>
+
+      <!-- Advice Accordion -->
+      <div>
+        <div class="flex justify-between items-center cursor-pointer accordion-header">
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+              <i class="fas fa-lightbulb text-yellow-600"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-800">Advice</h3>
+          </div>
+          <i class="fas fa-chevron-down accordion-icon text-gray-500"></i>
+        </div>
+        <div class="accordion-content mt-4 pl-11">
+          <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg">
+            <p id="advice" class="text-gray-700">
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        const icon = header.querySelector('.accordion-icon');
+        
+        content.classList.toggle('open');
+        icon.classList.toggle('open');
+      });
+    });
+
+    const calculateButton = document.getElementById('calculate-button');
+    const rawtextInput = document.getElementById('rawtext-input');
+    const resultsSection = document.getElementById('results-section');
+    const analysisSection = document.getElementById('analysis-section');
+
+    if (calculateButton) {
+      calculateButton.addEventListener('click', () => {
+        const rawtext = rawtextInput.value;
+        if (!rawtext) {
+          alert('Please enter your information.');
+          return;
+        }
+
+        calculateButton.innerHTML = '🔮 Calculating...';
+        calculateButton.disabled = true;
+        
+        fetch('/api/numerology', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ rawtext: rawtext })
+        })
+        .then(response => response.json())
+        .then(apiResponse => {
+          calculateButton.innerHTML = '🔮 Calculate Numerology';
+          calculateButton.disabled = false;
+          
+          const data = JSON.parse(apiResponse.answer);
+
+          // 1. Update Theme
+          if (data.theme) {
+              const body = document.body;
+              body.style.background = data.theme.background;
+              body.style.color = data.theme.textColor;
+              body.style.fontFamily = data.theme.fontFamily;
+
+              document.querySelectorAll('.card').forEach(card => {
+                  card.style.background = data.theme.cardBackground;
+                  card.style.borderRadius = data.theme.borderRadius;
+                  card.style.boxShadow = data.theme.shadow;
+              });
+          }
+
+          // 2. Update Header
+          if (data.header) {
+              document.querySelector('header h1').innerHTML = `${data.header.icon} ${data.header.title} ${data.header.icon}`;
+              document.querySelector('header p').innerText = data.header.subtitle;
+          }
+
+          // 3. Update Results Section
+          if (data.results_section && data.results_section.items) {
+              data.results_section.items.forEach(item => {
+                  const valueEl = document.getElementById(`${item.id}-number`);
+                  const calcEl = document.getElementById(`${item.id}-calculation`);
+                  const cardEl = document.getElementById(`${item.id}-card`);
+
+                  if (valueEl) valueEl.innerText = item.value;
+                  if (calcEl) {
+                      calcEl.innerHTML = item.calculation.replace(/\n/g, '<br>');
+                  }
+                  if (cardEl) {
+                    const titleEl = cardEl.querySelector('h3');
+                    if (titleEl) titleEl.innerText = item.title;
+                  }
+              });
+          }
+
+          // 4. Update Analysis Section
+          if (data.analysis_section) {
+              const analysisTitle = document.querySelector('#analysis-section h2');
+              if(analysisTitle) analysisTitle.innerText = data.analysis_section.title;
+
+              const coreMeaningEl = document.getElementById('core-meaning');
+              if(coreMeaningEl) coreMeaningEl.innerText = data.analysis_section.core_meaning;
+
+              const strengthsList = document.getElementById('strengths-list');
+              if (strengthsList && data.analysis_section.strengths) {
+                  strengthsList.innerHTML = '';
+                  data.analysis_section.strengths.forEach(strength => {
+                      const li = document.createElement('li');
+                      li.className = 'text-gray-700';
+                      li.innerText = strength;
+                      strengthsList.appendChild(li);
+                  });
+              }
+
+              const challengesList = document.getElementById('challenges-list').querySelector('ul');
+              if (challengesList && data.analysis_section.challenges) {
+                  challengesList.innerHTML = '';
+                  data.analysis_section.challenges.forEach(challenge => {
+                      const li = document.createElement('li');
+                      li.className = 'text-gray-700';
+                      li.innerText = challenge;
+                      challengesList.appendChild(li);
+                  });
+              }
+
+              const lifeMissionEl = document.getElementById('life-mission');
+              if (lifeMissionEl) lifeMissionEl.innerText = data.analysis_section.life_mission;
+
+              const adviceEl = document.getElementById('advice');
+              if (adviceEl) adviceEl.innerText = data.analysis_section.advice;
+          }
+
+          resultsSection.classList.remove('hidden');
+          analysisSection.classList.remove('hidden');
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          calculateButton.innerHTML = '🔮 Calculate Numerology';
+          calculateButton.disabled = false;
+        });
+      });
+    }
+  </script>
+</body>
+</html>
